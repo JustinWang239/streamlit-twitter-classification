@@ -6,13 +6,13 @@ from simpletransformers.classification import ClassificationModel
 import numpy as np
 
 @st.cache(show_spinner=False)
-def get_tweets(user: str) -> pd.DataFrame:
+def get_tweets(user: str, amount: int) -> pd.DataFrame:
     # Created a list to append all tweet attributes(data)
     attributes_container = []
 
     # Using TwitterSearchScraper to scrape data and append tweets to list
     for i,tweet in enumerate(sntwitter.TwitterSearchScraper('from:' + user).get_items()):
-        if i==100:
+        if i==amount:
             break
         attributes_container.append([tweet.content, tweet.url])
         
@@ -38,9 +38,12 @@ def get_tweets(user: str) -> pd.DataFrame:
 
 st.title('Twitter Toxicity Detector')
 user = st.text_input('Enter a twitter handle:', '@jordanbpeterson')
-x = st.slider('Select the # of latest tweets to review:')
+amount = st.slider('Select the # of latest tweets to review:')
 
 if st.button('Submit'):
     with st.spinner('Loading...'):
-        tweets_df = get_tweets(user)
-    st.dataframe(tweets_df)
+        tweets_df = get_tweets(user, amount)
+    if (tweets_df.size == 0):
+        st.write('No bad tweets found!')
+    else:
+        st.dataframe(tweets_df)
