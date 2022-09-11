@@ -32,4 +32,8 @@ if st.button('Submit'):
     tweets_df['Results'] = results.tolist()
     toxic_df = tweets_df[tweets_df['Results'] != 2]
 
+    classifications = {0: 'Hate Speech', 1: 'Offensive'}
+    display_df = toxic_df.replace({'Results': classifications})
+    display_df.rename(columns={'Results': 'Type'}, inplace=True)
+
     st.dataframe(toxic_df['Tweets', 'Urls'].reset_index(drop=True))
