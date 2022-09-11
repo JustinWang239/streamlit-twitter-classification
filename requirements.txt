@@ -1,0 +1,6 @@
+streamlit
+pandas
+snscrape
+simpletransformers
+numpy
+torch
