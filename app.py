@@ -1,14 +1,12 @@
+from webbrowser import get
 import streamlit as st
 import pandas as pd
 import snscrape.modules.twitter as sntwitter
 from simpletransformers.classification import ClassificationModel
 import numpy as np
 
-st.title('Twitter Toxicity Detector')
-user = st.text_input('Enter a twitter handle:', '@jordanbpeterson')
-x = st.slider('Select the # of latest tweets to review:')
-
-if st.button('Submit'):
+@st.cache(show_spinner=False)
+def get_tweets(user: str) -> pd.DataFrame:
     # Created a list to append all tweet attributes(data)
     attributes_container = []
 
@@ -36,4 +34,13 @@ if st.button('Submit'):
     display_df = toxic_df.replace({'Results': classifications})
     display_df.rename(columns={'Results': 'Type'}, inplace=True)
 
-    st.dataframe(display_df.reset_index(drop=True))
+    return display_df.reset_index(drop=True)
+
+st.title('Twitter Toxicity Detector')
+user = st.text_input('Enter a twitter handle:', '@jordanbpeterson')
+x = st.slider('Select the # of latest tweets to review:')
+
+if st.button('Submit'):
+    with st.spinner('Loading...'):
+        tweets_df = get_tweets(user)
+    st.dataframe(tweets_df)
