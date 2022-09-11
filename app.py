@@ -36,4 +36,4 @@ if st.button('Submit'):
     display_df = toxic_df.replace({'Results': classifications})
     display_df.rename(columns={'Results': 'Type'}, inplace=True)
 
-    st.dataframe(toxic_df.reset_index(drop=True))
+    st.dataframe(display_df.reset_index(drop=True))
