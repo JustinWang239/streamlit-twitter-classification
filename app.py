@@ -5,6 +5,9 @@ import snscrape.modules.twitter as sntwitter
 from simpletransformers.classification import ClassificationModel
 import numpy as np
 
+model = ClassificationModel('roberta', 'trained_model', use_cuda=False)
+
+
 @st.cache(show_spinner=False)
 def get_tweets(user: str, amount: int) -> pd.DataFrame:
     # Created a list to append all tweet attributes(data)
@@ -19,7 +22,6 @@ def get_tweets(user: str, amount: int) -> pd.DataFrame:
     # Creating a dataframe from the tweets list above 
     tweets_df = pd.DataFrame(attributes_container, columns=['Tweets', 'Urls'])
 
-    model = ClassificationModel('roberta', 'trained_model', use_cuda=False)
     eval_set = tweets_df['Tweets'].astype(str)
     results = np.array([])
 
@@ -37,8 +39,8 @@ def get_tweets(user: str, amount: int) -> pd.DataFrame:
     return display_df.reset_index(drop=True)
 
 st.title('Twitter Toxicity Detector')
-user = st.text_input('Enter a twitter handle:', '@jordanbpeterson')
-amount = st.slider('Select the # of latest tweets to review:')
+user = st.text_input('Enter a twitter handle:', '@scrowder')
+amount = st.slider('Select the # of latest tweets to review (select 15-25 if server is slow):')
 
 if st.button('Submit'):
     with st.spinner('Loading...'):
