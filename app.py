@@ -5,7 +5,11 @@ import snscrape.modules.twitter as sntwitter
 from simpletransformers.classification import ClassificationModel
 import numpy as np
 
-model = ClassificationModel('roberta', 'trained_model', use_cuda=False)
+@st.cache
+def load_model():
+	  return ClassificationModel('roberta', 'trained_model', use_cuda=False)
+
+model = load_model()
 
 
 @st.cache(show_spinner=False)
