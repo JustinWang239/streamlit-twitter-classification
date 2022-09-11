@@ -44,7 +44,7 @@ def get_tweets(user: str, amount: int) -> pd.DataFrame:
 
 st.title('Twitter Toxicity Detector')
 user = st.text_input('Enter a twitter handle:', '@scrowder')
-amount = st.slider('Select the # of latest tweets to review (select 15-25 if server is slow):', value=[1,50])
+amount = st.slider('Select the # of latest tweets to review (select 15-25 if server is slow):', min_value=1, max_value=50)
 
 if st.button('Submit'):
     with st.spinner('Loading...'):
